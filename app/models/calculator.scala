@@ -1,8 +1,9 @@
 package net.svil.bootcamp.electricity.Models
 
 object Calculator{
-  def accumelate(h: History, p: Plan): Long = {
+  def accumelate(h: History, powerCapacity: Int, p: Plan): Long = {
     // TODO
-    h.data.foldLeft(0L){ case (a, (k, v)) => a+v*p.flatRate}
+    // data.foldLeft(0L){ case (a, (k, v)) => a+v*p.flatRate}
+    p.basicCharge(powerCapacity) + h.totalConsumption*p.payAsYouGoCharge(0)/100
   }
 }
