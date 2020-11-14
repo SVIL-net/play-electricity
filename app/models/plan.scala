@@ -1,19 +1,25 @@
 package net.svil.bootcamp.electricity.Models
 
-class Plan(val name:String){
- // TODO
- //val chargeRule = if (name == "TepcoB") new TepcoB() else new Flat30()
-    val basicCharge = Map(0 -> 0)
-    val payAsYouGoCharge = Map(0 -> 0)
+sealed abstract class Plan(name:String){
+    val basicCharge:Int = 0
+    val rate:Double = 0
 }
 
-// https://www.tepco.co.jp/ep/private/plan/old01.html
-class TepcoB() extends Plan("hoge"){
-    override val basicCharge = Map(10 -> 286, 20 -> 572, 30->858) // (A -> Yen)
-    override val payAsYouGoCharge = Map(0 -> 1988, 129 -> 2648, 300 -> 3057) // (kWh -> 0.01Yen)
-}
+case class FlatRatePlan(name:String, override val basicCharge:Int, override val rate:Double) extends Plan(name)
 
-class Flat30() extends Plan("hoge"){
-    override val basicCharge = Map(10 -> 0, 20 -> 0, 30->0) // (A -> Yen)
-    override val payAsYouGoCharge = Map(0 -> 3000) // (kWh -> 0.01Yen)
+//https://looop-denki.com/low-v/plan/ouchi/
+case class Looop(name:String, area:String, currentCapacity:Int) extends Plan(name){
+    override val basicCharge:Int = currentCapacity match {
+        case _ => 0
+        }
+    override val rate:Double = area match {
+        case a if List("hokkaido") contains a  => 29.5
+        case a if List("tohoku","tokyo","chubu") contains a  => 26.4
+        case a if List("hokuriku") contains a  => 21.3
+        case a if List("kansai") contains a  => 22.4
+        case a if List("chubu","sikoku") contains a  => 24.4
+        case a if List("kyusyu") contains a  => 23.4
+        case a if List("okinawa") contains a  => 23.4
+        case _ => 0.0
+        }
 }

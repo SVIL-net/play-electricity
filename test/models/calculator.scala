@@ -6,25 +6,28 @@ import java.time.LocalDateTime
 class SimpleFlatRateComputation extends PlaySpec{
   "Calculator" must {
     "return correct value in FlatRate" in {
-      val plan = new Flat30()
-      val powerCapacity = 20 // 20A
+      val flatRatePlan = new FlatRatePlan("test", 1000, 0.1)
       val history = new History( Map(
                                   LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
                                   LocalDateTime.parse("2020-11-01T01:00:00") -> 200
                                 ))
-      Calculator.accumelate(history, powerCapacity, plan) must be (9000)
+      Calculator.accumelate(history, flatRatePlan) must be (1030)     
     }
-    "return correct value in TepcoB Plan" in {
-      val plan = new TepcoB() // Tepco Plan B
-      val powerCapacity = 20 // 20A
+    "return correct value in 20A/Tokyo with Looop" in {
+      val plan = new Looop("test", "tokyo", 20)
       val history = new History( Map(
                                   LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
-                                  LocalDateTime.parse("2020-11-08T00:00:00") -> 100,
-                                  LocalDateTime.parse("2020-11-15T00:00:00") -> 100,
-                                  LocalDateTime.parse("2020-11-22T00:00:00") -> 100,
-                                  LocalDateTime.parse("2020-11-29T00:00:00") -> 100,
-                                )) // 500kWh per month
-      Calculator.accumelate(history, powerCapacity, plan) must be (572+500*19.88)
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 200
+                                ))
+      Calculator.accumelate(history, plan) must be (0 + 26.4*300)     
+    }
+    "return correct value in 40A/Kansai with Looop" in {
+      val plan = new Looop("test", "kansai", 40)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 200
+                                ))
+      Calculator.accumelate(history, plan) must be (0 + 22.4*300)     
     }
   }
 }
