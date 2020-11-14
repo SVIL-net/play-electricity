@@ -36,6 +36,19 @@ object Calculator{
         }        
         plan.basicCharge.toLong + (h.totalConsumption*rate - deduction).toLong
       }
+      case TokyoGas1S(name, area, currentCapacity) => {
+        val rate:Double = h.totalConsumption match {
+        case c if 0 until 120 contains c => 19.85
+        case c if 120 until 300 contains c => 25.35
+        case _ => 27.48
+        }
+        val deduction:Double = h.totalConsumption match {
+        case c if 0 until 120 contains c => 0
+        case c if 120 until 300 contains c => 120*(25.35-19.85)
+        case _ => 120*(27.48-19.85) + 180*(27.48-25.35)
+        }        
+        plan.basicCharge.toLong + (h.totalConsumption*rate - deduction).toLong
+      }
       case TokyoGas1(name, area, currentCapacity) => {
         val rate:Double = h.totalConsumption match {
         case c if 0 until 140 contains c => 23.67

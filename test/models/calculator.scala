@@ -77,6 +77,22 @@ class SimpleFlatRateComputation extends PlaySpec{
                                  ))
       Calculator.accumelate(history, plan) must be ((1144 + 19.88*120 + 24.54*180 + 26.22*100).toLong)
     }
+    "return correct value in 200kWh/30A/Tokyo with TokyoGas1S" in {
+      val plan = new TokyoGas1S("test", "tokyo", 30)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 100
+                                 ))
+      Calculator.accumelate(history, plan) must be ((858 + 19.85*120 + 25.35*80).toLong)    
+    }
+    "return correct value in 400kWh/40A/Tokyo with TokyoGas1S" in {
+      val plan = new TokyoGas1S("test", "tokyo", 40)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 200,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 200
+                                 ))
+      Calculator.accumelate(history, plan) must be ((1144 + 19.85*120 + 25.35*180 + 27.48*100).toLong)
+    }
     "return correct value in 200kWh/30A/Tokyo with TokyoGas1" in {
       val plan = new TokyoGas1("test", "tokyo", 30)
       val history = new History( Map(

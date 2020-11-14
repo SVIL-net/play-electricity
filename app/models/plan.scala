@@ -59,3 +59,15 @@ case class TokyoGas1(name:String, area:String, currentCapacity:Int) extends Plan
         case 60 => 1716
         }
 }
+// https://home.tokyo-gas.co.jp/power/ryokin/menu_waribiki/menu1s.html
+case class TokyoGas1S(name:String, area:String, currentCapacity:Int) extends Plan(name){
+    override val basicCharge:Int = currentCapacity match {
+        case 10 => 286
+        case 15 => 429
+        case 20 => 572
+        case 30 => 858
+        case 40 => 1144
+        case 50 => 1430
+        case 60 => 1716
+        }
+}
