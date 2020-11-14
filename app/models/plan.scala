@@ -3,6 +3,7 @@ package net.svil.bootcamp.electricity.Models
 sealed abstract class Plan(name:String){
     val basicCharge:Int = 0
     val rate:Double = 0
+    val rateTable:Map[Int,Double] =  Map(0->0.0)
 }
 
 case class FlatRatePlan(name:String, override val basicCharge:Int, override val rate:Double) extends Plan(name)
@@ -21,5 +22,18 @@ case class Looop(name:String, area:String, currentCapacity:Int) extends Plan(nam
         case a if List("kyusyu") contains a  => 23.4
         case a if List("okinawa") contains a  => 23.4
         case _ => 0.0
+        }
+}
+
+//https://www.tepco.co.jp/ep/private/plan/old01.html
+case class TepcoB(name:String, area:String, currentCapacity:Int) extends Plan(name){
+    override val basicCharge:Int = currentCapacity match {
+        case 10 => 286
+        case 15 => 429
+        case 20 => 572
+        case 30 => 858
+        case 40 => 1144
+        case 50 => 1430
+        case 60 => 1716
         }
 }
