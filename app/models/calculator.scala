@@ -14,16 +14,27 @@ object Calculator{
         val rate:Double = h.totalConsumption match {
         case c if 0 until 120 contains c => 19.88
         case c if 120 until 300 contains c => 26.48
-        case c if 300 until 99999 contains c => 30.57
-        case _ => 0L
+        case _ => 30.57
         }
         val deduction:Double = h.totalConsumption match {
         case c if 0 until 120 contains c => 0
         case c if 120 until 300 contains c => 120*(26.48-19.88)
-        case c if 300 until 99999 contains c => 120*(30.57-19.88) + 180*(30.57-26.48)
-        case _ => 0L
+        case _ => 120*(30.57-19.88) + 180*(30.57-26.48)
         }        
-        plan.basicCharge.toLong + (h.totalConsumption*rate).toLong - deduction.toLong
+        plan.basicCharge.toLong + (h.totalConsumption*rate - deduction).toLong
+      }
+      case EneosB(name, area, currentCapacity) => {
+        val rate:Double = h.totalConsumption match {
+        case c if 0 until 120 contains c => 19.88
+        case c if 120 until 300 contains c => 24.54
+        case _ => 26.22
+        }
+        val deduction:Double = h.totalConsumption match {
+        case c if 0 until 120 contains c => 0
+        case c if 120 until 300 contains c => 120*(24.54-19.88)
+        case _ => 120*(26.22-19.88) + 180*(26.22-24.54)
+        }        
+        plan.basicCharge.toLong + (h.totalConsumption*rate - deduction).toLong
       }
       case _ => 0L
     }    

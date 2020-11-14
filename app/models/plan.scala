@@ -37,3 +37,16 @@ case class TepcoB(name:String, area:String, currentCapacity:Int) extends Plan(na
         case 60 => 1716
         }
 }
+
+//https://www.eneos.co.jp/denki/charge/
+case class EneosB(name:String, area:String, currentCapacity:Int) extends Plan(name){
+    override val basicCharge:Int = currentCapacity match {
+        case 10 => 286
+        case 15 => 429
+        case 20 => 572
+        case 30 => 858
+        case 40 => 1144
+        case 50 => 1430
+        case 60 => 1716
+        }
+}

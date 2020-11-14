@@ -53,5 +53,29 @@ class SimpleFlatRateComputation extends PlaySpec{
                                  ))
       Calculator.accumelate(history, plan) must be (1144 + 19.88*120 + 26.48*180 + 30.57*100)     
     }
+    "return correct value in 100kWh/20A/Tokyo with EneosB" in {
+      val plan = new EneosB("test", "tokyo", 20)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 50,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 50
+                                 ))
+      Calculator.accumelate(history, plan) must be (572 + 19.88*100)     
+    }
+    "return correct value in 200kWh/30A/Tokyo with EneosB" in {
+      val plan = new EneosB("test", "tokyo", 30)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 100
+                                 ))
+      Calculator.accumelate(history, plan) must be ((858 + 19.88*120 + 24.54*80).toLong)    
+    }
+    "return correct value in 400kWh/40A/Tokyo with EneosB" in {
+      val plan = new EneosB("test", "tokyo", 40)
+      val history = new History( Map(
+                                  LocalDateTime.parse("2020-11-01T00:00:00") -> 200,
+                                  LocalDateTime.parse("2020-11-01T01:00:00") -> 200
+                                 ))
+      Calculator.accumelate(history, plan) must be ((1144 + 19.88*120 + 24.54*180 + 26.22*100).toLong)
+    }
   }
 }
