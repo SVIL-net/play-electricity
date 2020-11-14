@@ -50,3 +50,12 @@ case class EneosB(name:String, area:String, currentCapacity:Int) extends Plan(na
         case 60 => 1716
         }
 }
+// https://home.tokyo-gas.co.jp/power/ryokin/menu_waribiki/menu1.html
+case class TokyoGas1(name:String, area:String, currentCapacity:Int) extends Plan(name){
+    override val basicCharge:Int = currentCapacity match {
+        case 30 => 858
+        case 40 => 1144
+        case 50 => 1430
+        case 60 => 1716
+        }
+}
