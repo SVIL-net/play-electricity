@@ -24,10 +24,10 @@ class SimpleFlatRateComputation extends PlaySpec{
       case 60 => 1716.0
         case _ => 0.0
     }
-    val stageRateTepcoB: Long=>Double = {
-      case c if c <= 120 => 19.88
-      case c if c > 120 && c <= 300 => 26.48
-      case _ => 30.57
+    val stageTotalFTepcoB: Long=>Long = {
+      case c if c <= 120 => (19.88*c).toLong
+      case c if c > 120 && c <= 300 => (19.88*120+26.48*(c-120)).toLong
+      case c => (19.88*120+26.48*300+30.57*(c-300)).toLong
     }
     val hourRateTepcoYoru8: Int=>Double = hour => if (hour>=7 && hour <23) 32.74 else 21.16
     val baseTepcoYoru8:Int=>Double = current => current /10*214.5
@@ -40,8 +40,8 @@ class SimpleFlatRateComputation extends PlaySpec{
       Calculator.accumelate(history, plan, 20) must be (572+2)
     }
     "return correct value in StagedRateWithCurrentLimitBaseCharge(TepcoB)" in {
-      val plan = new StageRateWithCurrentLimitBaseCharge("TepcoB", stageRateTepcoB, baseTepcoB)
-      Calculator.accumelate(history, plan, 20) must be (572+(250*26.48).toLong)
+      val plan = new StageRateWithCurrentLimitBaseCharge("TepcoB", stageTotalFTepcoB, baseTepcoB)
+      Calculator.accumelate(history, plan, 20) must be (572+(19.88*120+26.48*(250-120)).toLong)
     }
     "return correct value in DayNightWithCurrentLimitBaseCharge(夜トク8)" in {
       val plan = new DayNightWithCurrentLimitBaseCharge("夜トク8", hourRateTepcoYoru8, baseTepcoYoru8)

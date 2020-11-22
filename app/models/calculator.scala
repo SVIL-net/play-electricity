@@ -7,9 +7,9 @@ object Calculator{
       case FlatRateWithCurrentLimitBaseCharge(name, flatRate, base) => {
         base(currentLimit).toLong + h.data.foldLeft(0.0){ case (a, (k, v)) => a+v*flatRate}.toLong
       }
-      case StageRateWithCurrentLimitBaseCharge(name, stageRate, base) => {
+      case StageRateWithCurrentLimitBaseCharge(name, stageTotalF, base) => {
         val total:Long = h.data.foldLeft(0L){case (a, (k,v)) => a+v}
-        base(currentLimit).toLong + (stageRate(total)*total).toLong
+        base(currentLimit).toLong + (stageTotalF(total)).toLong
       }
       case DayNightWithCurrentLimitBaseCharge(name, hourRate, base) => {
         val totalPayAsYouGo:Long = h.data.foldLeft(0L){
