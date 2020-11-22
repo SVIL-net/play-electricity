@@ -1,0 +1,58 @@
+@startuml
+package "scala.collection" #DDDDDD{
+    class Seq' << (O,#FF7700)>>
+    class Seq
+}
+
+package "net.svil.bootcamp.electricity.Models{
+    abstract class Plan {
+        + name: String
+    }
+
+    class FlatRatePlan {
+        + name:String
+        + flatRate:Double
+    }
+    class FlatRateWithCurrentLimitBaseCharge {
+        + name:String
+        + flatRate:Double
+        + base:Int→Double
+    }
+    class StageRateWithCurrentLimitBaseCharge {
+        + name:String
+        + stageTotalF:Long→Long
+        + base:Int→Double
+    }
+    class DayNightWithCurrentLimitBaseCharge{
+        + name:String
+        + hourRate:Int→Double
+        + base:Int=>Double
+    }
+    class Calculator << (O,#FF7700)>> {
+        Long accumelate[P <: Plan](History, P, Int)
+    }                                                                }
+
+    class PlanCollection << (O,#FF7700)>>
+
+    class Solver << (O, #FF7700) >> {
+        Seq<Pair<String, Long>> solve(History)
+    }
+
+    class History
+
+    class History' << (O, #FF7700>>{
+        History fromBuffer()
+        History fromCSV()
+    }
+}
+
+PlanCollection "1" *-- "many" Plan
+Solver "1" *-- "1" Calculator: contains
+Solver "1" *-- "1" PlanCollection:contains
+Seq <|-- PlanCollection
+
+Plan <|-- FlatRatePlan
+Plan <|-- FlatRateWithCurrentLimitBaseCharge
+Plan <|-- StageRateWithCurrentLimitBaseCharge
+Plan <|-- DayNightWithCurrentLimitBaseCharge
+@enduml
