@@ -23,3 +23,19 @@ object Calculator{
     }
   }
 }
+
+object Solver{
+  def solve(h: History, planCollection: Seq[Plan]): Seq[(String, Long)] = {
+    var pairs : Seq[(String,Long)] = Seq()
+    for (plan <- planCollection){
+      plan match {
+        case FlatRatePlan(name, flatRate) => pairs = pairs:+(name, Calculator.accumelate(h, plan, 20))
+        case FlatRateWithCurrentLimitBaseCharge(name, flatRate, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
+        case StageRateWithCurrentLimitBaseCharge(name, stageTotalF, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
+        case DayNightWithCurrentLimitBaseCharge(name, hourRate, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
+        case _ => print("mismatch")
+      }
+    }
+    pairs
+  }
+}

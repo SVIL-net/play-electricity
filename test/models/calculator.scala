@@ -49,3 +49,10 @@ class SimpleFlatRateComputation extends PlaySpec{
     }
   }
 }
+
+class SolverTest extends PlaySpec{
+    val history = new History(CsvLoader.load("log.csv").toMap)
+    val plans = PlanCollection.get
+    val out = Solver.solve(history, plans)
+    println(out)
+}
