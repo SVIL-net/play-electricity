@@ -27,6 +27,7 @@ object Calculator{
 object Solver{
   def solve(h: History, planCollection: Seq[Plan]): Seq[(String, Long)] = {
     var pairs : Seq[(String,Long)] = Seq()
+    val pairs = planCollection.map(e => (e.name, Calculator.accumelate(h,e,10)))
     for (plan <- planCollection){
       plan match {
         case FlatRatePlan(name, flatRate) => pairs = pairs:+(name, Calculator.accumelate(h, plan, 20))
