@@ -26,17 +26,12 @@ object Calculator{
 
 object Solver{
   def solve(h: History, planCollection: Seq[Plan]): Seq[(String, Long)] = {
+//  def solve(h: History, planCollection: Seq[Plan]): Unit = {
+//    val pairs = planCollection.map(e => (e.name, Calculator.accumelate(h,e,10)))
     var pairs : Seq[(String,Long)] = Seq()
-    val pairs = planCollection.map(e => (e.name, Calculator.accumelate(h,e,10)))
     for (plan <- planCollection){
-      plan match {
-        case FlatRatePlan(name, flatRate) => pairs = pairs:+(name, Calculator.accumelate(h, plan, 20))
-        case FlatRateWithCurrentLimitBaseCharge(name, flatRate, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
-        case StageRateWithCurrentLimitBaseCharge(name, stageTotalF, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
-        case DayNightWithCurrentLimitBaseCharge(name, hourRate, base) => pairs = pairs :+ (name, Calculator.accumelate(h, plan, 20))
-        case _ => print("mismatch")
-      }
+      pairs = pairs :+ ((plan.name, Calculator.accumelate(h, plan, 20)/1000*4))
     }
-    pairs
+    pairs.sortBy(_._2)
   }
 }

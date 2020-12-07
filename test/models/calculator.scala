@@ -51,8 +51,13 @@ class SimpleFlatRateComputation extends PlaySpec{
 }
 
 class SolverTest extends PlaySpec{
-    val history = new History(CsvLoader.load("log.csv").toMap)
-    val plans = PlanCollection.get
-    val out = Solver.solve(history, plans)
-    println(out)
+  "Solver" must {
+    "return correct value in Solver.solve" in {
+      val history = new History(CsvLoader.load("log.csv").toMap)
+      val plans = PlanCollection.get
+      val out = Solver.solve(history, plans)
+      println(out)
+      out mustBe a[Seq[(String,Long)]]
+    }
+  }
 }
