@@ -11,3 +11,4 @@ target
 /.metals/
 project/target
 /.vscode/
+log.csv
