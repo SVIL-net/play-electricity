@@ -10,9 +10,9 @@ case class DayNightWithCurrentLimitBaseCharge(override val name:String, hourRate
 
 object PlanCollection{
     val stageTotalFTepcoB: Long=>Long = {
-        case c if c <= 120 => (19.88*c).toLong
-        case c if c > 120 && c <= 300 => (19.88*120+26.48*(c-120)).toLong
-        case c => (19.88*120+26.48*300+30.57*(c-300)).toLong
+        case c if c <= 120000 => (19.88*c).toLong
+        case c if c > 120000 && c <= 300000 => (19.88*120000+26.48*(c-120000)).toLong
+        case c => (19.88*120000+26.48*300000+30.57*(c-300000)).toLong
     }
 
     val baseTepcoB: Int => Double = {
