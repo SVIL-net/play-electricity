@@ -1,5 +1,7 @@
 package net.svil.bootcamp.electricity.Models
-class Fee(val baseCharge: Long, val usageCharge:Long)
+case class Fee(val baseCharge: Long, val usageCharge:Long){
+  def total: Long = baseCharge + usageCharge/1000
+}
 
 object Calculator{
   def accumelate[P <: Plan](h: History, plan: P, currentLimit: Int): Fee = {
@@ -22,15 +24,5 @@ object Calculator{
       }
       case _ => new Fee(0L, 0L)
     }
-  }
-}
-
-object Solver{
-  def solve(h: History, planCollection: Seq[Plan]): Seq[(String, Long)] = {
-    var pairs : Seq[(String,Long)] = Seq()
-    for (plan <- planCollection){
-      pairs = pairs :+ ((plan.name, Calculator.accumelate(h, plan, 20).baseCharge + Calculator.accumelate(h, plan, 20).usageCharge/1000))
-    }
-    pairs.sortBy(_._2)
   }
 }

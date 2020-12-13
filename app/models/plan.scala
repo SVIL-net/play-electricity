@@ -30,6 +30,10 @@ object PlanCollection{
     val baseTepcoYoru8:Int=>Double = current => current /10*214.5
 
     def get: Seq[Plan] = {
-        Seq(FlatRatePlan("test", 0.1),StageRateWithCurrentLimitBaseCharge("TepcoB", stageTotalFTepcoB, baseTepcoB),DayNightWithCurrentLimitBaseCharge("夜トク8", hourRateTepcoYoru8, baseTepcoYoru8))
+      Seq(
+        FlatRatePlan("test", 1),
+        StageRateWithCurrentLimitBaseCharge("TepcoB", stageTotalFTepcoB, baseTepcoB),
+        DayNightWithCurrentLimitBaseCharge("夜トク8", hourRateTepcoYoru8, baseTepcoYoru8)
+      )
     }
 }
