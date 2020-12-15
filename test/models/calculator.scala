@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 class SimpleFlatRateComputation extends PlaySpec{
   "Calculator" must {
     val history = new History( Map(
-                                LocalDateTime.parse("2020-11-01T00:00:00") -> 100,
-                                LocalDateTime.parse("2020-11-01T09:00:00") -> 150
+                                LocalDateTime.parse("2020-11-01T00:00:00") -> 1000,
+                                LocalDateTime.parse("2020-11-01T09:00:00") -> 1500
                               ))
     val baseFlat30: Int => Double = {
       case c if c <= 10 => 286
@@ -33,19 +33,20 @@ class SimpleFlatRateComputation extends PlaySpec{
     val baseTepcoYoru8:Int=>Double = current => current /10*214.5
    "return correct value in FlatRate" in {
       val plan = new FlatRatePlan("test", 0.1)
-      Calculator.accumelate(history, plan, 10) must be (25.0)
+      Calculator.accumelate(history, plan, 10).total must be (1)
     }
     "return correct value in FlatRateWithCurrentBaseCharge" in {
       val plan = new FlatRateWithCurrentLimitBaseCharge("test", 0.01, baseFlat30)
-      Calculator.accumelate(history, plan, 20) must be (572+2)
+      Calculator.accumelate(history, plan, 20).total must be (572L)
     }
     "return correct value in StagedRateWithCurrentLimitBaseCharge(TepcoB)" in {
       val plan = new StageRateWithCurrentLimitBaseCharge("TepcoB", stageTotalFTepcoB, baseTepcoB)
-      Calculator.accumelate(history, plan, 20) must be (572+(19.88*120+26.48*(250-120)).toLong)
+      Calculator.accumelate(history, plan, 20).total must be (878L)
     }
     "return correct value in DayNightWithCurrentLimitBaseCharge(夜トク8)" in {
       val plan = new DayNightWithCurrentLimitBaseCharge("夜トク8", hourRateTepcoYoru8, baseTepcoYoru8)
-      Calculator.accumelate(history, plan, 20) must be ((214.5*2 + 100*21.16+150*32.74).toLong)
+      Calculator.accumelate(history, plan, 20).total must be (710)
     }
   }
 }
+
