@@ -176,12 +176,16 @@ class SolverTest extends PlaySpec{
                                 LocalDateTime.parse("2020-11-07T22:00:00") -> 500,
                                 LocalDateTime.parse("2020-11-07T23:00:00") -> 500
                               ))
-      val plans = PlanCollection.get
-      val out = Solver.solve(history, plans)
-      out must be (Seq(("test", (((500.0)*(24*7)*1*4)/1000).toLong),
-                      ("夜トク8", (214.5*20/10 + (500.0/1000)*(8*7*4)*21.16+(500.0/1000)*(16*7*4)*32.74).toLong),
-                      ("TepcoB", (572+(19.88*120000+26.48*300000+30.57*(500*24*7*4-300000))/1000).toLong)
-                    ))
+      val out = Solver.solve(history)
+      out must be (
+        Seq(
+          ("SmartCourse",6985), ("HisPrime50",7909), ("KumamotoOuchiB",8012),
+          ("JapanDenryokuKiurashi",8232), ("PitaDen",8638), ("LpioS",8660),
+          ("AshitaDenkiStandard",8736), ("LooopOuchi",8870), ("TokyoGasZuttomo1",8872),
+          ("EneosTokyoV",9381), ("SimpleCourse",9937), ("夜トク8",10132),
+          ("AshitaDenkiTappuri",10224), ("JuryoDentoA",10269), ("TepcoB",10841)
+        )
+      )
     }
   }
 }
