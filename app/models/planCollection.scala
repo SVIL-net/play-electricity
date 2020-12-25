@@ -80,19 +80,19 @@ object PlanCollection {
     case c if c <= 11 => (411.4).toLong
     case c if c > 11 && c <= 120 => (411.4+20.37*(c-11)).toLong
     case c if c > 120 && c <= 300 => (411.4+20.37*109+26.99*(c-120)).toLong
-    case c => (411.4+20.37*109+26.99*180+30.57*(c-300)).toLong
+    case c => (411.4+20.37*109+26.99*180+30.50*(c-300)).toLong
   }
 
-  private[this] val stageTotalFSimpleCourse: Long=>Long = {
+  private[this] val stageTotalFSmartCourse: Long=>Long = {
     case c if c <= 15 => (227.37).toLong
     case c if c > 15 && c <= 120 => (227.37+20.79*(c-15)).toLong
     case c if c > 120 && c <= 300 => (227.37+20.79*105+27.47*(c-120)).toLong
     case c => (227.37+20.79*105+27.47*80+29.59*(c-300)).toLong
   }
 
-  private[this] val stageTotalFSmartCourse: Long=>Long = {
+  private[this] val stageTotalFSimpleCourse: Long=>Long = {
     case c if c <= 64 => (1650).toLong
-    case c if c > 64 => (1650+20.79*(c-64)).toLong
+    case c if c > 64 => (1650+25.78*(c-64)).toLong
   }
 
   private[this] val stageTotalFKumamotoOuchiB: Long=>Long = {
@@ -114,7 +114,7 @@ object PlanCollection {
     case c => (18.84*120+23.03*180+25.78*(c-300)).toLong
   }
 
-  private[this] val stageTotalFJapanDenryokuKiurashi: Long=>Long = {
+  private[this] val stageTotalFJapanDenryokuKurashi: Long=>Long = {
     case c if c <= 250 => (26.00*c).toLong
     case c if c > 250 && c <= 400 => (26.00*250+25.5*(c-250)).toLong
     case c => (26.00*250+25.5*150+24.50*(c-400)).toLong
@@ -125,20 +125,20 @@ object PlanCollection {
   private[this] val baseTepcoYoru8:Int=>Double = current => current /10*214.5
 
   def apply():Seq[Plan] = Seq(
-    FlatRatePlan("LooopOuchi",26.4),
-    FlatRatePlan("AshitaDenkiStandard",26.0),
-    FlatRatePlan("PitaDen",25.71),
-    FlatRateWithCurrentLimitBaseCharge("HisPrime50", 23.54, baseHisPrime50),
-    FlatRateWithCurrentLimitBaseCharge("AshitaDenkiTappuri", 21.5, baseAshitaDenkiTappuri),
-    StageRateWithCurrentLimitBaseCharge("TepcoB", stageTotalFTepcoB, baseTepcoB),
-    StageRateWithCurrentLimitBaseCharge("EneosTokyoV", stageTotalFEneosTokyoV, baseEneosTokyoV),
-    StageRateWithCurrentLimitBaseCharge("TokyoGasZuttomo1", stageTotalFTokyoGasZuttomo1, baseTokyoGasZuttomo1),
-    StageRateWithCurrentLimitBaseCharge("KumamotoOuchiB", stageTotalFKumamotoOuchiB, baseKumamotoOuchiB),
-    StageRateWithCurrentLimitBaseCharge("LpioS", stageTotalFLpioS, baseLpioS),
-    DayNightWithCurrentLimitBaseCharge("夜トク8", hourRateTepcoYoru8, baseTepcoYoru8),
-    StageRateWithCurrentLimitBaseCharge("JuryoDentoA",stageTotalFJuryoDentoA, baseZero),
-    StageRateWithCurrentLimitBaseCharge("SmartCourse",stageTotalFSmartCourse, baseZero),
-    StageRateWithCurrentLimitBaseCharge("SimpleCourse",stageTotalFSimpleCourse, baseZero),
-    StageRateWithCurrentLimitBaseCharge("JapanDenryokuKiurashi",stageTotalFJapanDenryokuKiurashi, baseZero)
+    FlatRatePlan("Looop電気 おうちプラン",26.4),
+    FlatRatePlan("あしたでんき 標準プラン",26.0),
+    FlatRatePlan("ピタでん 使った分だけ",25.71),
+    FlatRateWithCurrentLimitBaseCharge("HIS電気 プライム50東京", 23.54, baseHisPrime50),
+    FlatRateWithCurrentLimitBaseCharge("あしたでんき たっぷりプラン", 21.5, baseAshitaDenkiTappuri),
+    StageRateWithCurrentLimitBaseCharge("TEPCO 従量電灯B", stageTotalFTepcoB, baseTepcoB),
+    StageRateWithCurrentLimitBaseCharge("ENEOSでんき 東京Vプラン従量電灯B", stageTotalFEneosTokyoV, baseEneosTokyoV),
+    StageRateWithCurrentLimitBaseCharge("TOKYO-GAS ずっとも電気1", stageTotalFTokyoGasZuttomo1, baseTokyoGasZuttomo1),
+    StageRateWithCurrentLimitBaseCharge("熊本電力 おうち電気B", stageTotalFKumamotoOuchiB, baseKumamotoOuchiB),
+    StageRateWithCurrentLimitBaseCharge("LPIO スタンダードプランS", stageTotalFLpioS, baseLpioS),
+    DayNightWithCurrentLimitBaseCharge("TEPCO 夜トク8", hourRateTepcoYoru8, baseTepcoYoru8),
+    StageRateWithCurrentLimitBaseCharge("四国電力 従量電灯A",stageTotalFJuryoDentoA, baseZero),
+    StageRateWithCurrentLimitBaseCharge("中国電力 スマートコース",stageTotalFSmartCourse, baseZero),
+    StageRateWithCurrentLimitBaseCharge("中国電力 シンプルコース",stageTotalFSimpleCourse, baseZero),
+    StageRateWithCurrentLimitBaseCharge("Japan電力 くらしプラン",stageTotalFJapanDenryokuKurashi, baseZero)
   )
 }

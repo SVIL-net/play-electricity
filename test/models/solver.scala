@@ -179,11 +179,11 @@ class SolverTest extends PlaySpec{
       val out = Solver.solve(history)
       out must be (
         Seq(
-          ("SmartCourse",6985), ("HisPrime50",7909), ("KumamotoOuchiB",8012),
-          ("JapanDenryokuKiurashi",8232), ("PitaDen",8638), ("LpioS",8660),
-          ("AshitaDenkiStandard",8736), ("LooopOuchi",8870), ("TokyoGasZuttomo1",8872),
-          ("EneosTokyoV",9381), ("SimpleCourse",9937), ("夜トク8",10132),
-          ("AshitaDenkiTappuri",10224), ("JuryoDentoA",10269), ("TepcoB",10841)
+          ("HIS電気 プライム50東京",7909),("熊本電力 おうち電気B",8012),("Japan電力 くらしプラン",8232),
+          ("ピタでん 使った分だけ",8638),("LPIO スタンダードプランS",8660),("中国電力 シンプルコース",8662),
+          ("あしたでんき 標準プラン",8736),("Looop電気 おうちプラン",8870),("TOKYO-GAS ずっとも電気1",8872),
+          ("ENEOSでんき 東京Vプラン従量電灯B",9381),("中国電力 スマートコース",9937),("TEPCO 夜トク8",10132),
+          ("あしたでんき たっぷりプラン",10224),("四国電力 従量電灯A",10246),("TEPCO 従量電灯B",10841)
         )
       )
     }
