@@ -2,29 +2,38 @@ package net.svil.bootcamp.electricity.Models
 
 import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
+import java.time.format.DateTimeParseException
+import java.time.format.DateTimeFormatter
 import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.HashMap
-
+import scala.util.{Try, Success, Failure}
 
 class History(val data: Map[LocalDateTime, Long])
 
-object CsvLoader{
-  def load(path: String): Map[LocalDateTime,Long] = {
-    val src = Source.fromFile(path)
-    var convertedRows  = Map.empty[LocalDateTime,Long]
-    val df = DateTimeFormatter.ofPattern("yyyy/MM/dd H[H]:mm:ss");
-    var count = 0
-
-    for ((line, index) <- src.getLines().zipWithIndex) {
-      val row = line.split(",").map(_.trim)
-      if(!row.isEmpty && index != 0 && count < 24*7 && row(0).contains(":00:"))
-      {
-        convertedRows += ( LocalDateTime.parse(row(0),df) -> row(2).toLong)
-        count = count + 1
+object History {
+  def parseDateTime(s:String): Try[LocalDateTime] = Try{
+    LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy/MM/dd H[H]:mm:ss"))
+  }
+  def fromCSV(path: String): History = {
+    val lines: LazyList[String] = Source.fromFile(path).getLines().to(LazyList)
+    val output: LazyList[(LocalDateTime, Long)] = lines.foldLeft[LazyList[(LocalDateTime, Long)]](LazyList.empty)(
+      (acc:LazyList[(LocalDateTime, Long)], line) => {
+        val sp:Array[String] = line.split(",").map(_.trim)
+        if(sp.isEmpty) {
+          acc
+        } else if(sp(0).isEmpty){
+          acc
+        } else if(sp(0).contains(":00:")){
+          parseDateTime(sp(0)) match{
+            case Success(t) => (t, sp(1).toLong) #:: acc
+            case Failure(e) => acc
+          }
+        } else {
+          acc
+        }
       }
-    }
-    src.close()
-    convertedRows
-    }
+    )
+    val zipped = output.zip(output.drop(1)).map( e => (e._2._1, e._2._2-e._1._2))
+    new History(zipped.toMap)
+
+  }
 }
